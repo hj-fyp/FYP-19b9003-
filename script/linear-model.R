@@ -9,8 +9,11 @@ str(original_dataset)
 original_dataset$Property.types <- as.factor(original_dataset$Property.types)
 original_dataset$Quarters <- as.factor(original_dataset$Quarters)
 
+##--FULL MODEL------------------------------------------------------------------
+
 model <- lm(Price ~ Acre + Sqft + Property.types + Floor + Bedrooms + Bathrooms + Quarters, data = original_dataset)
 summary(model)
+
 # 
 # Call:
 #   lm(formula = Price ~ Acre + Sqft + Property.types + Floor + Bedrooms + 
@@ -21,13 +24,13 @@ summary(model)
 # -368415  -30365   -1541   26014  821867 
 # 
 # Coefficients:
-#   Estimate Std. Error t value Pr(>|t|)    
+#                                Estimate Std. Error t value Pr(>|t|)    
 # (Intercept)                 -1.216e+05  1.348e+04  -9.026  < 2e-16 ***
-#   Acre                         4.744e+05  4.359e+04  10.885  < 2e-16 ***
-#   Sqft                         6.100e+01  3.257e+00  18.729  < 2e-16 ***
-#   Property.typesSemi-detached -7.258e+02  5.192e+03  -0.140 0.888852    
+# Acre                         4.744e+05  4.359e+04  10.885  < 2e-16 ***
+# Sqft                         6.100e+01  3.257e+00  18.729  < 2e-16 ***
+# Property.typesSemi-detached -7.258e+02  5.192e+03  -0.140 0.888852    
 # Property.typesTerrace       -2.541e+04  7.601e+03  -3.343 0.000858 ***
-#  Floor                        3.496e+03  6.398e+03   0.546 0.584935    
+# Floor                        3.496e+03  6.398e+03   0.546 0.584935    
 # Bedrooms                     3.224e+04  3.779e+03   8.531  < 2e-16 ***
 # Bathrooms                    1.916e+04  2.943e+03   6.511 1.15e-10 ***
 # Quarters1                    1.626e+03  6.291e+03   0.259 0.796058    
@@ -40,6 +43,9 @@ summary(model)
 # Residual standard error: 66020 on 1061 degrees of freedom
 # Multiple R-squared:  0.7454,	Adjusted R-squared:  0.7428 
 # F-statistic: 282.4 on 11 and 1061 DF,  p-value: < 2.2e-16
+
+
+##--FLOOR, BEDROOMS & BATHROOMS-------------------------------------------------
 
 mod_bb <- lm(Price ~ Acre + Sqft + Floor + Bedrooms + Bathrooms + Quarters, data = original_dataset)
 summary(mod_bb)
@@ -71,6 +77,8 @@ summary(mod_bb)
 # Multiple R-squared:  0.7424,	Adjusted R-squared:  0.7402 
 # F-statistic: 340.4 on 9 and 1063 DF,  p-value: < 2.2e-16
 
+##--PROPERTY TYPES--------------------------------------------------------------
+
 mod_types <- lm(Price ~ Acre + Sqft + Floor + Property.types + Quarters, data = original_dataset)
 summary(mod_types)
 
@@ -101,6 +109,8 @@ summary(mod_types)
 # Multiple R-squared:  0.6984,	Adjusted R-squared:  0.6959 
 # F-statistic: 273.5 on 9 and 1063 DF,  p-value: < 2.2e-16
 
+##--LOG TRANSFORMATION----------------------------------------------------------
+
 log_model <- lm(log(Price) ~ Acre + Sqft + Property.types + Floor + Bedrooms + Bathrooms + Quarters, data = original_dataset)
 summary(log_model)
 
@@ -129,3 +139,100 @@ summary(log_model)
 # Residual standard error: 0.1724 on 1065 degrees of freedom
 # Multiple R-squared:  0.7697,	Adjusted R-squared:  0.768 
 # F-statistic:   445 on 8 and 1065 DF,  p-value: < 2.2e-16
+
+##--SQRT TRANSFORMATION---------------------------------------------------------
+
+sqrt_model <- lm(sqrt(Price) ~ Acre + Sqft + Property.types + Floor + Bedrooms + Bathrooms + Quarters, data = original_dataset)
+summary(sqrt_model)
+
+# Call:
+#   lm(formula = sqrt(Price) ~ Acre + Sqft + Property.types + Floor + 
+#        Bedrooms + Bathrooms + Quarters, data = original_dataset)
+# 
+# Residuals:
+#   Min      1Q  Median      3Q     Max 
+# -267.37  -27.26   -2.26   23.79  400.87 
+# 
+# Coefficients:
+#                                Estimate Std. Error t value Pr(>|t|)    
+#   (Intercept)                 182.142035   9.571296  19.030  < 2e-16 ***
+#   Acre                        345.302576  31.768959  10.869  < 2e-16 ***
+#   Sqft                          0.045191   0.002365  19.110  < 2e-16 ***
+#   Property.typesSemi-detached  -8.380032   3.772773  -2.221   0.0265 *  
+#   Property.typesTerrace       -36.886733   5.491904  -6.717 3.02e-11 ***
+#   Floor                        23.123078   4.639932   4.983 7.28e-07 ***
+#   Bedrooms                     22.111626   2.755785   8.024 2.69e-15 ***
+#   Bathrooms                    17.696954   2.140171   8.269 4.00e-16 ***
+#   Quarters                      1.282698   1.030087   1.245   0.2133    
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Residual standard error: 48.22 on 1064 degrees of freedom
+# Multiple R-squared:  0.7814,	Adjusted R-squared:  0.7798 
+# F-statistic: 475.5 on 8 and 1064 DF,  p-value: < 2.2e-16
+
+##--INVERSE TRANSFORMATION------------------------------------------------------
+
+inv_model <- lm(( 1 / Price) ~ Acre + Sqft + Property.types + Floor + Bedrooms + Bathrooms + Quarters, data = original_dataset)
+summary(inv_model)
+
+# Call:
+#   lm(formula = (1/Price) ~ Acre + Sqft + Property.types + Floor + 
+#        Bedrooms + Bathrooms + Quarters, data = original_dataset)
+# 
+# Residuals:
+#   Min         1Q     Median         3Q        Max 
+# -1.973e-06 -4.825e-07 -1.035e-07  3.514e-07  3.603e-06 
+# 
+# Coefficients:
+#                               Estimate Std. Error t value Pr(>|t|)    
+#   (Intercept)                  8.488e-06  1.485e-07  57.176  < 2e-16 ***
+#   Acre                        -3.053e-06  4.927e-07  -6.196 8.27e-10 ***
+#   Sqft                        -3.906e-10  3.668e-11 -10.649  < 2e-16 ***
+#   Property.typesSemi-detached  2.646e-07  5.852e-08   4.522 6.82e-06 ***
+#   Property.typesTerrace        8.527e-07  8.518e-08  10.011  < 2e-16 ***
+#   Floor                       -9.826e-07  7.197e-08 -13.654  < 2e-16 ***
+#   Bedrooms                    -1.617e-07  4.274e-08  -3.783 0.000164 ***
+#   Bathrooms                   -2.357e-07  3.319e-08  -7.099 2.29e-12 ***
+#   Quarters                    -4.890e-09  1.598e-08  -0.306 0.759630    
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Residual standard error: 7.48e-07 on 1064 degrees of freedom
+# Multiple R-squared:  0.6872,	Adjusted R-squared:  0.6848 
+# F-statistic: 292.2 on 8 and 1064 DF,  p-value: < 2.2e-16
+
+##--BACKWARD ELIMINATION--------------------------------------------------------
+
+summary(model)
+
+# Call:
+#   lm(formula = Price ~ Acre + Sqft + Property.types + Floor + Bedrooms + 
+#        Bathrooms + Quarters, data = original_dataset)
+# 
+# Residuals:
+#   Min      1Q  Median      3Q     Max 
+# -368415  -30365   -1541   26014  821867 
+# 
+# Coefficients:
+#                              Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)                 -1.216e+05  1.348e+04  -9.026  < 2e-16 ***
+# Acre                         4.744e+05  4.359e+04  10.885  < 2e-16 ***
+# Sqft                         6.100e+01  3.257e+00  18.729  < 2e-16 ***
+# Property.typesSemi-detached -7.258e+02  5.192e+03  -0.140 0.888852    
+# Property.typesTerrace       -2.541e+04  7.601e+03  -3.343 0.000858 ***
+# Floor                        3.496e+03  6.398e+03   0.546 0.584935    
+# Bedrooms                     3.224e+04  3.779e+03   8.531  < 2e-16 ***
+# Bathrooms                    1.916e+04  2.943e+03   6.511 1.15e-10 ***
+# Quarters1                    1.626e+03  6.291e+03   0.259 0.796058    
+# Quarters2                   -6.586e+03  6.260e+03  -1.052 0.293054    
+# Quarters3                   -9.527e+02  6.513e+03  -0.146 0.883734    
+# Quarters4                    9.672e+03  6.157e+03   1.571 0.116514    
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Residual standard error: 66020 on 1061 degrees of freedom
+# Multiple R-squared:  0.7454,	Adjusted R-squared:  0.7428 
+# F-statistic: 282.4 on 11 and 1061 DF,  p-value: < 2.2e-16
+
+

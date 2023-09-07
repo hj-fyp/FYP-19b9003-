@@ -374,6 +374,4 @@ original_dataset <- original_dataset %>%
 original_dataset <- original_dataset %>%
   filter(!is.na(Price))
 
-
-
 original_dataset <- read_excel("data/compiled dataset/dataset.xlsx")
