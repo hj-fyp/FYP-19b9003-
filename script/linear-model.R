@@ -11,8 +11,7 @@ original_dataset$Quarters <- as.factor(original_dataset$Quarters)
 
 ##--FULL MODEL------------------------------------------------------------------
 
-model <- lm(Price ~ Acre + Sqft + Property.types + Floor + Bedrooms + Bathrooms + Quarters, data = original_dataset)
-summary(model)
+ 
 
 # 
 # Call:
@@ -235,4 +234,30 @@ summary(model)
 # Multiple R-squared:  0.7454,	Adjusted R-squared:  0.7428 
 # F-statistic: 282.4 on 11 and 1061 DF,  p-value: < 2.2e-16
 
+model1 <- update(model, .~. -Quarters)
+summary(model1)  
 
+# Call:
+#   lm(formula = Price ~ Acre + Sqft + Property.types + Floor + Bedrooms + 
+#        Bathrooms, data = original_dataset)
+# 
+# Residuals:
+#   Min      1Q  Median      3Q     Max 
+# -371244  -31437   -2538   24660  819529 
+# 
+# Coefficients:
+# Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)                 -1.207e+05  1.268e+04  -9.520  < 2e-16 ***
+# Acre                         4.790e+05  4.325e+04  11.076  < 2e-16 ***
+# Sqft                         6.098e+01  3.215e+00  18.964  < 2e-16 ***
+# Property.typesSemi-detached  6.279e+01  5.058e+03   0.012  0.99010    
+# Property.typesTerrace       -2.612e+04  7.445e+03  -3.508  0.00047 ***
+# Floor                        3.141e+03  6.295e+03   0.499  0.61791    
+# Bedrooms                     3.199e+04  3.750e+03   8.530  < 2e-16 ***
+# Bathrooms                    1.955e+04  2.916e+03   6.704 3.29e-11 ***
+#   ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Residual standard error: 65710 on 1066 degrees of freedom
+# Multiple R-squared:  0.7459,	Adjusted R-squared:  0.7443 
+# F-statistic: 447.1 on 7 and 1066 DF,  p-value: < 2.2e-16

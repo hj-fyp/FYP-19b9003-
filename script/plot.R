@@ -25,3 +25,16 @@ shapiro.test(property_dataset$Price)
 ggsave("box_plot.png", plot = boxplot, width = 6, height = 4)
 ggsave("histogram.png", plot = last_plot(), width = 6, height = 4)
 
+property_counts <- table(property_dataset$Property.types)
+property_counts_df <- as.data.frame(property_counts)
+colnames(property_counts_df) <- c("Property.type", "Count")
+
+custom_colors <- c("maroon", "pink", "brown")
+
+# Create the pie chart with custom colors
+ggplot(property_counts_df, aes(x = "", y = Count, fill = Property.type)) +
+  geom_bar(stat = "identity", width = 1, color = "black", size = 1) +
+  coord_polar(theta = "y") +
+  labs(fill = "Property Type") +
+  scale_fill_manual(values = custom_colors) +  # Set custom colors
+  ggtitle("Distribution of Property Types")
