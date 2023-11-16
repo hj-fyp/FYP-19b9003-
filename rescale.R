@@ -31,3 +31,45 @@ summary(modified_model1)
 modified_model2 <- update(modified_model1, .~. -Floor)
 summary(modified_model2)
 
+
+
+library(tidyverse)
+library(readr)
+
+calculate_means <- function(property_dataset, quarters, property.types){
+  property_dataset %>%
+    summarise(
+      mean_acre = mean(acre),
+      mean_sqft = mean(sqft),
+      mean_bedrooms = mean(bedrooms),
+      mean_bathrooms = mean(bathrooms)
+    )
+}
+
+mukimdata <- read_csv(“mukimdata.csv”)
+mkm_data <- mukimdata %>%
+  filter(mukim %in% unique(property_dataset$mukim))
+
+predict_price <- function(mkm_data, quarters, property.types) {
+  property_means <- calculate_means(property_dataset, quarters, property.types)
+  
+  prediction_data <- mkm_data %>%
+    reframe(
+      acre = property_means$mean_acre,
+      sqft = property_means$mean_sqft,
+      bedrooms = property_means$mean_bedrooms,
+      bathrooms = property_means$mean_bathrooms,
+      mukim = mukim,
+      X = X,
+      Y = Y,
+      quarters = as.factor(quarters), 
+      property.types = as.factor(property.types)
+    )
+  
+  predictions <- predict(predicted_model1, newdata = prediction_data)
+  prediction_data$predicted.price <- predictions
+  
+  return(prediction_data)
+}
+
+
